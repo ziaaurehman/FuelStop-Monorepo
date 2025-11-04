@@ -1,7 +1,6 @@
-import React from "react";
+// app/settings/page.tsx
+import { redirect } from "next/navigation";
 
-const page = () => {
-  return <div>Settings Page </div>;
-};
-
-export default page;
+export default function SettingsIndexPage() {
+  redirect("/settings/general");
+}

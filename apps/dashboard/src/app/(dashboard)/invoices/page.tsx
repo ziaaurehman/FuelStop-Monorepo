@@ -1,7 +1,13 @@
+import { AppHeader, HeaderActions } from "@/components";
 import React from "react";
 
 const page = () => {
-  return <div>Invoices Page </div>;
+  return (
+    <>
+      <AppHeader headerActions={<HeaderActions />} />
+      <div className="space-y-6 md:p-8 p-4">Invoice Page</div>
+    </>
+  );
 };
 
 export default page;

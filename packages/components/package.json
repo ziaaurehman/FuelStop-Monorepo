@@ -20,7 +20,8 @@
     "clsx": "^2.1.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.548.0",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "vaul": "^1.1.2"
   },
   "peerDependencies": {
     "react": "^19.0.0",

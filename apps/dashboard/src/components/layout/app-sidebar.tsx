@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fuel } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,16 +14,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+  useSidebar,
 } from "@repo/components";
 import { navigationConfig } from "@/config";
 import { UserProfile } from "./user-profile";
+import Logo from "../misc/logo";
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   // Filter out the "System" group and limit the main sidebar items to 5
   const filteredNavigation = navigationConfig
@@ -36,38 +34,20 @@ export function AppSidebar() {
     (group) => group.title === "System"
   );
 
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false); // <--- close sidebar on mobile
+    }
+  };
+
   return (
     <Sidebar
       collapsible="icon"
       variant="inset"
-      className="text-white bg-black border-none"
-      
+      className="text-white bg-black border-none data-[mobile=true]:bg-black"
     >
       <SidebarHeader>
-        <SidebarMenuButton
-          size="lg"
-          className="w-full justify-start gap-2 py-3 px-2 data-[state=open]:bg-transparent"
-          asChild
-        >
-          <Link href="/" className="flex items-center gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                    <Fuel className="h-5 w-5 text-white" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="right" className="bg-black text-white">
-                  FuelStop
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <span className="text-xl font-semibold text-white truncate">
-              FuelStop
-            </span>
-          </Link>
-        </SidebarMenuButton>
+        <Logo color="white" />
       </SidebarHeader>
 
       <SidebarContent>
@@ -85,12 +65,12 @@ export function AppSidebar() {
                       key={item.href}
                       className={`${
                         isActive
-                          ? "bg-[#172D32] text-white font-medium rounded-xl py-1"
+                          ? "bg-primary text-white font-medium rounded-xl py-1"
                           : "text-neutral-400 py-1"
                       }`}
                     >
                       <SidebarMenuButton asChild>
-                        <Link href={item.href}>
+                        <Link href={item.href} onClick={handleLinkClick}>
                           <item.icon className="h-6 w-6" />
                           <span>{item.title}</span>
                           {item.badge && (
@@ -122,13 +102,13 @@ export function AppSidebar() {
                       key={item.href}
                       className={`${
                         isActive
-                          ? "bg-[#172D32] text-white rounded-xl"
+                          ? "bg-primary text-white rounded-xl"
                           : "text-gray-300"
                       }`}
                     >
                       <SidebarMenuButton asChild>
-                        <Link href={item.href}>
-                          <item.icon className="h-4 w-4" />
+                        <Link href={item.href} onClick={handleLinkClick}>
+                          <item.icon className="h-6 w-6" />
                           <span>{item.title}</span>
                           {item.badge && (
                             <span className="ml-auto text-xs">
