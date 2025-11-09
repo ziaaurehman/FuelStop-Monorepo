@@ -11,6 +11,8 @@ export default {
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
     extend: {
       colors: {
+        "primary-light": "#008C9D",
+        "secondary-light": "#A7E3E1",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

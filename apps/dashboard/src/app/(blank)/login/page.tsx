@@ -10,9 +10,9 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-white px-4 font-sans">
+    <div className="flex h-screen w-full flex-col items-center justify-center bg-white px-4 font-sans">
       {/* Header */}
-      <div className="hidden absolute top-6 right-10  md:flex items-center space-x-2 text-sm">
+      <div className="hidden absolute top-6 right-10  md:flex items-center text-sm">
         <span className="text-gray-500">Don’t have an account?</span>
         <Link href="/register">
           <Button variant="outline" size="sm" className="font-medium">

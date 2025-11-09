@@ -10,6 +10,7 @@ import {
   SlidersHorizontal,
   type LucideIcon,
   Crown,
+  Activity,
 } from "lucide-react";
 
 export interface NavItem {
@@ -52,6 +53,12 @@ export const navigationConfig: NavGroup[] = [
         description: "Monitor your fuel delivery in real-time",
         href: "/delivery-tracking",
         icon: Truck,
+      },
+      {
+        title: "Active Deliveries",
+        description: "Monitor your Active Deliveries in real-time",
+        href: "/active-deliveries",
+        icon: Activity,
       },
       {
         title: "Invoices & Payments",

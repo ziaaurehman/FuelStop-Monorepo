@@ -86,7 +86,7 @@ export function ResponsiveModal({
     sm: "sm:max-w-sm",
     md: "sm:max-w-md",
     lg: "sm:max-w-lg",
-    xl: "sm:max-w-xl",
+    xl: "sm:max-w-2xl",
     full: "sm:max-w-[95vw]",
   };
 

@@ -13,6 +13,14 @@ export function SettingsSidebar() {
 
   return (
     <nav className="p-4 space-y-1">
+      <div className="hidden md:flex mb-6">
+        <div className="relative max-w-md">
+          <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground text-sm text-nowrap">
+            Choose Between Categories
+          </p>
+        </div>
+      </div>
       {settingsNav.map((item) => {
         const isActive = pathname === item.href;
         return (

@@ -23,6 +23,11 @@
   --input: 240 5.9% 90%;
   --ring: 240 5.9% 10%;
   --radius: 0.5rem;
+
+  --primary: 192 100% 22%;
+  --primary-light: 185 100% 31%;
+  --secondary: 175 100% 35%;
+  --secondary-light: 176 48% 78%;
 }
 
 .dark {

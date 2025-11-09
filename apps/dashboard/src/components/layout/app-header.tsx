@@ -27,7 +27,7 @@ export function AppHeader({ headerActions }: AppHeaderProps) {
   const pathname = usePathname();
 
   const currentPage = findPageMeta(pathname) || {
-    title: "Page Not Found",
+    title: "",
     description: "",
     icon: null,
   };
