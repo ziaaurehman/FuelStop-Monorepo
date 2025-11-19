@@ -7,4 +7,5 @@ export * from "./pages/settings";
 export * from "./pages/support";
 export * from "./pages/invoices";
 export * from "./pages/delivery-tracking";
+export * from "./pages/orders";
 export * from "./misc";

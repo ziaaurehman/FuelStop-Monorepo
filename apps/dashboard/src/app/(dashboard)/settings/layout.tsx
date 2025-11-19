@@ -1,7 +1,5 @@
-// app/settings/layout.tsx
 import { ReactNode } from "react";
 import { SettingsSidebar } from "@/components";
-// import { MobileSettingsNav } from "@/components";
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (

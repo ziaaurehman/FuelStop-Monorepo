@@ -4,3 +4,4 @@ export * from "./time-range-selector";
 export * from "./fuel-consumption-chart";
 export * from "./fleet-comaprison";
 export * from "./effeciency-insight";
+export { default as FuelUsagePage } from "./page";
