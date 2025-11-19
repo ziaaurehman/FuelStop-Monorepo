@@ -22,3 +22,7 @@ export * from "./ui/accordion";
 export * from "./ui/scroll-area";
 export * from "./ui/switch";
 export * from "./ui/slider";
+export * from "./ui/tabs";
+export * from "./shared";
+export * from "./types";
+export * from "./lib";

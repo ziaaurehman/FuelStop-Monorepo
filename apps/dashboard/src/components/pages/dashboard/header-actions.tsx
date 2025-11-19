@@ -1,5 +1,4 @@
-import { ResponsiveModal } from "@/components/ui";
-import { Button } from "@repo/components";
+import { Button, ResponsiveModal } from "@repo/components";
 import { Bell, Plus, Search } from "lucide-react";
 import { NewOrderForm } from "./modal/new-order";
 

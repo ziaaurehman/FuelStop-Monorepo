@@ -13,9 +13,9 @@ import {
   CardHeader,
   CardTitle,
   Badge,
+  colors,
 } from "@repo/components";
 import { CheckCircle } from "lucide-react";
-import { colors } from "@/components/ui";
 
 const chartData = [
   { month: "Jan", fuelCost: 45000, labourCost: 25000, deliveryOverhead: 15000 },

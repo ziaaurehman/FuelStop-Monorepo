@@ -2,19 +2,19 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
-import { DataTable } from "@/components";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@repo/components/ui/card";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/components/ui/avatar";
-import { Badge, Button, Checkbox } from "@repo/components";
+  Badge,
+  Button,
+  Checkbox,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  DataTable,
+} from "@repo/components";
 import { Droplet } from "lucide-react";
 import { getStatusColor } from "@/lib";
 import { Order } from "@/data";

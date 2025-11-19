@@ -6,13 +6,14 @@ import {
   MobileSettingsNav,
   RoleSelector,
 } from "@/components";
-import { DataTable, TableColumnHeader } from "@/components";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
   Checkbox,
+  DataTable,
+  TableColumnHeader,
 } from "@repo/components";
 import { Member, members } from "@/data/members";
 import { useState } from "react";

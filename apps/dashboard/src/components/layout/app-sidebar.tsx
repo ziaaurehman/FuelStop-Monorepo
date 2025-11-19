@@ -16,11 +16,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@repo/components";
-import { navigationConfig } from "@/config";
-import { UserProfile } from "./user-profile";
-import Logo from "../misc/logo";
+import { navigationConfig, NavItem } from "@/config";
+import { ReactNode } from "react";
+import Logo from "@repo/components/shared/logo";
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  userProfile?: ReactNode;
+}
+
+export function AppSidebar({ userProfile }: AppSidebarProps) {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
 
@@ -39,6 +43,23 @@ export function AppSidebar() {
       setOpenMobile(false); // <--- close sidebar on mobile
     }
   };
+
+  function isItemActive(item: NavItem, pathname: string): boolean {
+    if (pathname === item.href) return true;
+
+    // Mark parent as active if pathname starts with its href + "/"
+    if (pathname.startsWith(item.href + "/")) return true;
+
+    // Recursively check children (if any)
+    if (
+      item.children &&
+      item.children.some((child) => isItemActive(child, pathname))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 
   return (
     <Sidebar
@@ -66,7 +87,7 @@ export function AppSidebar() {
                       className={`${
                         isActive
                           ? "bg-primary text-white font-medium rounded-xl py-1"
-                          : "text-neutral-400 py-1"
+                          : "text-neutral-400 hover:bg-primary-light/50 hover:text-white rounded-xl py-1 transition-colors"
                       }`}
                     >
                       <SidebarMenuButton asChild>
@@ -96,14 +117,15 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {systemGroup.items.map((item) => {
-                  const isActive = pathname === item.href;
+                  const isActive = isItemActive(item, pathname);
+
                   return (
                     <SidebarMenuItem
                       key={item.href}
                       className={`${
                         isActive
-                          ? "bg-primary text-white rounded-xl"
-                          : "text-gray-300"
+                          ? "bg-primary text-white font-medium rounded-xl py-1"
+                          : "text-neutral-400 hover:bg-primary-light/50 hover:text-white rounded-xl py-1 transition-colors"
                       }`}
                     >
                       <SidebarMenuButton asChild>
@@ -125,7 +147,7 @@ export function AppSidebar() {
           </SidebarGroup>
         )}
         {/* User Profile Section */}
-        <UserProfile />
+        {userProfile}
       </SidebarFooter>
     </Sidebar>
   );

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import { Button } from "@repo/components";
+import { Button, ResponsiveModal } from "@repo/components";
 import { InvoiceData, sampleInvoice } from "@/data";
-import { ResponsiveModal } from "@/components/ui";
+
 import { InvoiceDetailModal } from "./invoice-detail";
 import { PaymentSuccessModal } from "./payment-success";
 import { PaymentFormModal } from "./payment-form";

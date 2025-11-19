@@ -14,13 +14,7 @@ import { getStatusColor, getPriorityColor, formatDate } from "@/lib";
 import { ActionItem } from "@/types";
 import { useState } from "react";
 
-import {
-  AppHeader,
-  DataTable,
-  HeaderActions,
-  TableColumnHeader,
-  TableRowActions,
-} from "@/components";
+import { AppHeader, HeaderActions } from "@/components";
 import {
   Avatar,
   AvatarFallback,
@@ -28,11 +22,14 @@ import {
   Badge,
   Button,
   Checkbox,
+  DataTable,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  TableColumnHeader,
+  TableRowActions,
 } from "@repo/components";
 import { Order, orders } from "@/data";
 

@@ -8,8 +8,10 @@ import {
   ChartConfig,
   ChartContainer,
   Button,
+  colors
 } from "@repo/components";
 import { Cell, Label, Pie, PieChart } from "recharts";
+import { useState } from "react";
 
 const chartData = [
   { name: "Petroleum Haulers", value: 32, fill: colors.primary },
@@ -39,9 +41,6 @@ const chartConfig = {
     color: "hsl(var(--chart-4))",
   },
 } satisfies ChartConfig;
-
-import { useState } from "react";
-import { colors } from "@/components/ui";
 
 export function FleetComparisonChart() {
   const [activeTab, setActiveTab] = useState<"fleet" | "operation">("fleet");

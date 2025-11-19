@@ -3,15 +3,14 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Download, Eye } from "lucide-react";
 
+import { AppHeader, HeaderActions, InvoicePaymentFlow } from "@/components";
 import {
-  AppHeader,
-  HeaderActions,
+  Badge,
+  Checkbox,
   DataTable,
   TableColumnHeader,
   TableRowActions,
-  InvoicePaymentFlow,
-} from "@/components";
-import { Badge, Checkbox } from "@repo/components";
+} from "@repo/components";
 import { Invoice, invoices, getInvoiceStatusColor } from "@/data";
 import { ActionItem } from "@/types";
 import { formatDate } from "@/lib";

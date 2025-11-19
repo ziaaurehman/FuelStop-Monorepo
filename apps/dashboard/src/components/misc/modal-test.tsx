@@ -4,8 +4,10 @@ import {
   ResponsiveModal,
   ResponsiveModalFooter,
   ResponsiveModalPresets,
-} from "@/components";
-import { Button, Input, Label } from "@repo/components/index";
+  Button,
+  Input,
+  Label,
+} from "@repo/components";
 import { useState } from "react";
 import { Plus, Trash2, Edit } from "lucide-react";
 
@@ -32,7 +34,7 @@ export default function TestModalPage() {
           //   scrollBehavior="outside"
           //   maxHeight="90vh"
         >
-          <p >Your content goes here</p>
+          <p>Your content goes here</p>
         </ResponsiveModal>
         <Button onClick={() => setOpenAdd(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -68,7 +70,7 @@ export default function TestModalPage() {
             <Input id="gallons" type="number" placeholder="500" />
           </div>
 
-          <ResponsiveModalFooter >
+          <ResponsiveModalFooter>
             <Button
               type="button"
               variant="outline"
