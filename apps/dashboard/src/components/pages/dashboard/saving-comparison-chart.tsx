@@ -13,21 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/components";
-
-const chartData = [
-  { month: "Jan", fuelStopRate: 32000, marketRate: 55000 },
-  { month: "Feb", fuelStopRate: 35000, marketRate: 57000 },
-  { month: "Mar", fuelStopRate: 38000, marketRate: 59000 },
-  { month: "Apr", fuelStopRate: 36000, marketRate: 58000 },
-  { month: "May", fuelStopRate: 34000, marketRate: 56000 },
-  { month: "Jun", fuelStopRate: 37000, marketRate: 60000 },
-  { month: "Jul", fuelStopRate: 70000, marketRate: 95200 },
-  { month: "Aug", fuelStopRate: 42000, marketRate: 62000 },
-  { month: "Sep", fuelStopRate: 45000, marketRate: 65000 },
-  { month: "Oct", fuelStopRate: 43000, marketRate: 63000 },
-  { month: "Nov", fuelStopRate: 41000, marketRate: 61000 },
-  { month: "Dec", fuelStopRate: 44000, marketRate: 64000 },
-];
+import type { SavingsComparisonData } from "@/services/mock/dashboard.service";
 
 const chartConfig = {
   fuelStopRate: {
@@ -40,7 +26,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function SavingsComparisonChart() {
+interface SavingsComparisonChartProps {
+  data: SavingsComparisonData[];
+}
+
+export function SavingsComparisonChart({ data }: SavingsComparisonChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-4">
@@ -49,7 +39,7 @@ export function SavingsComparisonChart() {
       <CardContent className="flex-1 pb-4">
         <ChartContainer config={chartConfig} className="h-[400px] w-full">
           <AreaChart
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,
@@ -103,7 +93,7 @@ export function SavingsComparisonChart() {
                 <ChartTooltipContent
                   indicator="dot"
                   labelFormatter={(value) => {
-                    const dataPoint = chartData.find((d) => d.month === value);
+                    const dataPoint = data.find((d) => d.month === value);
                     if (dataPoint) {
                       const savings =
                         dataPoint.marketRate - dataPoint.fuelStopRate;

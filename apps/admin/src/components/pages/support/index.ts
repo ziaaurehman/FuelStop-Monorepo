@@ -1,4 +1,5 @@
-export * from './faq-section'
-export * from './contact-info'
-export * from './contact-form'
-export * from './ai-chatbot'
+export * from "./faq-section";
+export * from "./contact-info";
+export * from "./contact-form";
+export * from "./ai-chatbot";
+export { default as SupportPage } from "./page";

@@ -8,6 +8,7 @@ import {
   Button,
 } from "@repo/components";
 import { Info } from "lucide-react";
+import type { EfficiencyInsight } from "@/services/mock/fuel-usage.service";
 
 interface InsightItemProps {
   title: string;
@@ -17,9 +18,7 @@ interface InsightItemProps {
 function InsightItem({ title, description }: InsightItemProps) {
   return (
     <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
-      {/* <div className="rounded-full border-2 border-foreground p-1 mt-0.5"> */}
       <Info className="h-5 w-5" />
-      {/* </div> */}
       <div className="flex-1 space-y-2">
         <p className="text-sm leading-relaxed">{title}</p>
         {description && (
@@ -33,20 +32,11 @@ function InsightItem({ title, description }: InsightItemProps) {
   );
 }
 
-export function EfficiencyInsights() {
-  const insights = [
-    {
-      title: "Vehicle #102: 11% higher than fleet average",
-    },
-    {
-      title: "Predictive refueling reduced 22 labor hours this week.",
-    },
-    {
-      title:
-        "Your retail division achieved 17% lower emissions vs. Q1 baseline.",
-    },
-  ];
+interface EfficiencyInsightsProps {
+  insights: EfficiencyInsight[];
+}
 
+export function EfficiencyInsights({ insights }: EfficiencyInsightsProps) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader>

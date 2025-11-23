@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -39,8 +40,11 @@ interface ComparativeClientProps {
 }
 
 export function ComparativeClient({ timeRange }: ComparativeClientProps) {
-  // Filter data based on timeRange
-  const filteredData = chartData.slice(-parseInt(timeRange));
+  // Memoize filtered data to prevent unnecessary recalculations
+  const filteredData = useMemo(
+    () => chartData.slice(-parseInt(timeRange)),
+    [timeRange]
+  );
 
   return (
     <Card className="flex flex-col">

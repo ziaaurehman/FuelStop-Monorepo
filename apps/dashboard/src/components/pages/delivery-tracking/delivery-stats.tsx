@@ -12,7 +12,7 @@ interface DeliveryStatsProps {
   stats: Stat[];
 }
 
-export const DeliveryStats: React.FC<DeliveryStatsProps> = ({ stats }) => {
+export const DeliveryStats= ({ stats }:DeliveryStatsProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {stats.map((stat, index) => (

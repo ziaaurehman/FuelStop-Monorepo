@@ -1,0 +1,24 @@
+{
+    "export *": {
+      "prefix": "ex",
+      "body": ["export * from '.$1';"],
+      "description": "export *",
+    },
+    "export default": {
+      "prefix": "sx",
+      "body": ["export { default as  } from '.$1';"],
+      "description": "export Default",
+    },
+    "Component": {
+      "prefix": "comp",
+      "body": [
+
+        "",
+        "export default function Page() {",
+        "  return <",
+        "};",
+        "",
+      ],
+      "description": "Component",
+    },
+}

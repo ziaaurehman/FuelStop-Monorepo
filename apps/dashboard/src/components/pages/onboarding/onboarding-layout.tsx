@@ -1,6 +1,6 @@
 "use client";
 
-import Logo from "@/components/misc/logo";
+import Logo from "@repo/components/shared/logo";
 import { Button } from "@repo/components";
 
 interface OnboardingLayoutProps {

@@ -22,8 +22,7 @@ export default function NotificationCenterLayout({
   const router = useRouter();
 
   return (
-    <div className="flex h-[calc(100vh-2rem)] flex-col ">
-      <AppHeader headerActions={<HeaderActions/>}/>
+    <>
       {/* Tabs */}
       <div className="border-b bg-white p-4 md:p-6">
         <div className="flex gap-1 overflow-x-auto scrollbar-none">
@@ -50,6 +49,6 @@ export default function NotificationCenterLayout({
 
       {/* Content */}
       <div className="flex-1 overflow-hidden">{children}</div>
-    </div>
+    </>
   );
 }

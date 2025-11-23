@@ -14,21 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/components/ui/chart";
-
-const chartData = [
-  { month: "Jan", gallons: 32000 },
-  { month: "Feb", gallons: 58000 },
-  { month: "Mar", gallons: 43000 },
-  { month: "Apr", gallons: 75000 },
-  { month: "May", gallons: 42000 },
-  { month: "Jun", gallons: 70000 },
-  { month: "Jul", gallons: 88000 },
-  { month: "Aug", gallons: 67000 },
-  { month: "Sep", gallons: 36000 },
-  { month: "Oct", gallons: 45000 },
-  { month: "Nov", gallons: 52000 },
-  { month: "Dec", gallons: 33000 },
-];
+import type { MonthlyFuelData } from "@/services/mock/dashboard.service";
 
 const chartConfig = {
   gallons: {
@@ -37,7 +23,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function MonthlyFuelChart() {
+interface MonthlyFuelChartProps {
+  data: MonthlyFuelData[];
+}
+
+export function MonthlyFuelChart({ data }: MonthlyFuelChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-4">
@@ -47,7 +37,7 @@ export function MonthlyFuelChart() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <BarChart
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,

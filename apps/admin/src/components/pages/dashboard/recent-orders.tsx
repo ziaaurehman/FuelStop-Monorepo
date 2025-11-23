@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -19,63 +18,22 @@ import {
 import { Droplet } from "lucide-react";
 import { Order } from "@/data";
 import Link from "next/link";
-
-// Dummy active deliveries data
-const activeDeliveries: Order[] = [
-  {
-    id: "#ORD-98745",
-    client: "Metro Gas Station",
-    address: "123 Main St, Downtown",
-    gallons: 500,
-    status: "in transit",
-    driver: { name: "Dianne Russell", avatar: "" },
-    date: "2024-10-28T10:30:00",
-    priority: "high",
-  },
-  {
-    id: "#ORD-98746",
-    client: "City Fuel Hub",
-    address: "456 Oak Ave, Uptown",
-    gallons: 400,
-    status: "delivered",
-    driver: { name: "Savannah Nguyen", avatar: "" },
-    date: "2024-10-28T09:15:00",
-    priority: "medium",
-  },
-  {
-    id: "#ORD-98747",
-    client: "Express Gas",
-    address: "789 Pine Rd, Suburbs",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Jacob Jones", avatar: "" },
-    date: "2024-10-28T08:45:00",
-    priority: "low",
-  },
-  {
-    id: "#ORD-98748",
-    client: "Quick Stop Fuel",
-    address: "321 Maple Dr, Downtown",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Albert Flores", avatar: "" },
-    date: "2024-10-28T11:20:00",
-    priority: "medium",
-  },
-  {
-    id: "#ORD-98749",
-    client: "Highway Gas",
-    address: "654 Elm St, Highway Exit",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Esther Howard", avatar: "" },
-    date: "2024-10-28T07:30:00",
-    priority: "high",
-  },
-];
+import { useDashboardStore } from "@/stores/dashboard-store";
+import { useRecentOrders } from "@/hooks/queries";
+import { RecentOrdersSkeleton } from "./recent-orders-skeleton";
 
 export function RecentOrders() {
-  const [loading] = useState(false);
+  const { timeRange, dateRange } = useDashboardStore();
+
+  const {
+    data: activeDeliveries = [],
+    isLoading,
+    isError,
+  } = useRecentOrders({
+    timeRange,
+    dateRange,
+    limit: 5,
+  });
 
   // Define columns for the compact view
   const columns: ColumnDef<Order>[] = [
@@ -161,6 +119,25 @@ export function RecentOrders() {
     },
   ];
 
+  if (isLoading) {
+    return <RecentOrdersSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <Card className="flex flex-col">
+        <CardHeader className="pb-4 flex flex-row items-center justify-between space-y-0">
+          <CardTitle>Recent Orders</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0">
+          <div className="text-center text-muted-foreground py-8">
+            Failed to load recent orders
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-4 flex flex-row items-center justify-between space-y-0">
@@ -178,7 +155,7 @@ export function RecentOrders() {
           showSearch={false}
           showExport={false}
           showPagination={false}
-          loading={loading}
+          loading={false}
           emptyMessage="No active deliveries."
         />
       </CardContent>

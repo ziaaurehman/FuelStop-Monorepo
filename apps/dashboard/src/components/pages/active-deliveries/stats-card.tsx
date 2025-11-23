@@ -10,45 +10,23 @@ import {
   TooltipTrigger,
 } from "@repo/components";
 import { Droplet, DollarSign, Leaf, Info } from "lucide-react";
+import type { Stat } from "@/services/mock/active-deliveries.service";
 
-const stats = [
-  {
-    icon: Droplet,
-    label: "Monthly Fuel Consumption",
-    value: "486 gal",
-    badge: {
-      text: "5% Efficiency Gain",
-      variant: "success" as const,
-    },
-    tooltip: "Real-time data from LCRI.Q® device integrations",
-  },
-  {
-    icon: DollarSign,
-    label: "Estimated Savings",
-    value: "$0.32",
-    badge: {
-      text: "8% above target",
-      variant: "success" as const,
-    },
-    tooltip: "per gallon vs. market rates",
-  },
-  {
-    icon: Leaf,
-    label: "CO₂ Reduction",
-    value: "2.1 tons",
-    badge: {
-      text: "18% lower idle time",
-      variant: "destructive" as const,
-    },
-    tooltip: "Equivalent to planting 32 trees",
-  },
-];
+interface StatsCardsProps {
+  stats: Stat[];
+}
 
-export function StatsCards() {
+const iconMap = {
+  Droplet,
+  DollarSign,
+  Leaf,
+};
+
+export function StatsCards({ stats }: StatsCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-3 grid-cols-1">
       {stats.map((stat, index) => {
-        const Icon = stat.icon;
+        const Icon = iconMap[stat.icon as keyof typeof iconMap] || Droplet;
         return (
           <Card key={index}>
             <CardContent className="p-6">

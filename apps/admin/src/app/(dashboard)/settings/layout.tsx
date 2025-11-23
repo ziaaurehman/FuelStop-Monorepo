@@ -1,6 +1,6 @@
 // app/settings/layout.tsx
 import { ReactNode } from "react";
-import { SettingsSidebar } from "@/components";
+import { SettingsHeaderWrapper, SettingsSidebar } from "@/components";
 // import { MobileSettingsNav } from "@/components";
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
@@ -13,7 +13,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
         {/* Sidebar for md+ */}
 
         <main className=" h-full overflow-y-scroll overflow-x-hidden">
-          {children}
+          <SettingsHeaderWrapper>{children}</SettingsHeaderWrapper>
         </main>
       </div>
     </div>

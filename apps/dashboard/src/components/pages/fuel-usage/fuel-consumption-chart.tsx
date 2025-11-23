@@ -13,21 +13,7 @@ import {
   ChartTooltipContent,
 } from "@repo/components";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-
-const chartData = [
-  { month: "Jan", predicted: 30000, actual: 32000 },
-  { month: "Feb", predicted: 35000, actual: 33000 },
-  { month: "Mar", predicted: 40000, actual: 38000 },
-  { month: "Apr", predicted: 45000, actual: 42000 },
-  { month: "May", predicted: 50000, actual: 35000 },
-  { month: "Jun", predicted: 60000, actual: 35000 },
-  { month: "Jul", predicted: 55000, actual: 30000 },
-  { month: "Aug", predicted: 58000, actual: 34000 },
-  { month: "Sep", predicted: 62000, actual: 38000 },
-  { month: "Oct", predicted: 65000, actual: 42000 },
-  { month: "Nov", predicted: 63000, actual: 45000 },
-  { month: "Dec", predicted: 60000, actual: 43000 },
-];
+import type { FuelConsumptionData } from "@/services/mock/fuel-usage.service";
 
 const chartConfig = {
   predicted: {
@@ -41,12 +27,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface FuelConsumptionChartProps {
-  timeRange: "3" | "6" | "12";
+  data: FuelConsumptionData[];
 }
 
-export function FuelConsumptionChart({ timeRange }: FuelConsumptionChartProps) {
-  // Filter data based on timeRange
-  const filteredData = chartData.slice(-parseInt(timeRange));
+export function FuelConsumptionChart({
+  data,
+}: FuelConsumptionChartProps) {
 
   return (
     <Card className="flex flex-col">
@@ -56,7 +42,7 @@ export function FuelConsumptionChart({ timeRange }: FuelConsumptionChartProps) {
       <CardContent className="flex-1 pb-4">
         <ChartContainer config={chartConfig} className="h-[400px] w-full">
           <LineChart
-            data={filteredData}
+            data={data}
             margin={{
               left: 12,
               right: 12,

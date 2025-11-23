@@ -17,18 +17,41 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
-const chartData = [
-  { day: "Monday", gallons: 2500 },
-  { day: "Tuesday", gallons: 2800 },
-  { day: "Wednesday", gallons: 2200 },
-  { day: "Thursday", gallons: 3000 },
-  { day: "Friday", gallons: 2700 },
-  { day: "Saturday", gallons: 2900 },
-  { day: "Sunday", gallons: 2600 },
-];
+import { useDashboardStore } from "@/stores/dashboard-store";
+import { useWeeklyDeliveryTrends } from "@/hooks/queries";
+import { WeeklyDeliveryTrendsSkeleton } from "./weekly-delivery-skeleton";
 
 export function WeeklyDeliveryTrends() {
+  const { timeRange, dateRange } = useDashboardStore();
+
+  const {
+    data: chartData,
+    isLoading,
+    isError,
+  } = useWeeklyDeliveryTrends({
+    timeRange,
+    dateRange,
+  });
+
+  if (isLoading) {
+    return <WeeklyDeliveryTrendsSkeleton />;
+  }
+
+  if (isError || !chartData) {
+    return (
+      <Card className="flex flex-col">
+        <CardHeader>
+          <CardTitle>Weekly Delivery Trends</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1">
+          <div className="h-[350px] w-full flex items-center justify-center text-muted-foreground">
+            Failed to load chart data
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="flex flex-col">
       <CardHeader>
@@ -36,7 +59,7 @@ export function WeeklyDeliveryTrends() {
           <CardTitle>Weekly Delivery Trends</CardTitle>
           <Badge variant="outline" className="gap-2">
             <Calendar className="h-3 w-3" />
-            Feb 04 - Feb 11, 2024
+            {chartData.dateRange}
           </Badge>
         </div>
       </CardHeader>
@@ -44,7 +67,7 @@ export function WeeklyDeliveryTrends() {
         <div className="h-[350px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={chartData}
+              data={chartData.data}
               margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
             >
               <defs>

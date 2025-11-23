@@ -23,6 +23,8 @@ export * from "./ui/scroll-area";
 export * from "./ui/switch";
 export * from "./ui/slider";
 export * from "./ui/tabs";
+export * from "./ui/skeleton";
+export * from "./ui/alert-dialog";
 export * from "./shared";
 export * from "./types";
 export * from "./lib";

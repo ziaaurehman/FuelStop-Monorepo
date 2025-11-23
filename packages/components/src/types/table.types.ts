@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Table } from "@tanstack/react-table";
 import { ReactNode } from "react";
 
 export interface TableConfig<TData> {
@@ -47,4 +47,9 @@ export interface DataTableProps<TData> {
   expandableContent?: (row: TData) => React.ReactNode;
   mobileColumns?: string[];
   mobileVisibleColumns?: string[];
+  initialColumnFilters?: Array<{ id: string; value: unknown }>;
+  onSearchChange?: (value: string) => void;
+  onExport?: (table: Table<TData>) => void;
+  initialPagination?: { pageIndex?: number; pageSize?: number };
+  onPaginationChange?: (pagination: { pageIndex: number; pageSize: number }) => void;
 }

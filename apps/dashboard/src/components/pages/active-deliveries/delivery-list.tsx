@@ -1,7 +1,4 @@
 "use client";
-
-import {} from "@repo/components/ui/card";
-import {} from "@repo/components";
 import {
   Avatar,
   AvatarFallback,
@@ -19,32 +16,37 @@ import {
   SelectValue,
 } from "@repo/components";
 import { Droplet, Clock, Fuel } from "lucide-react";
-import { deliveries } from "@/data";
-import { useState } from "react";
+import { useActiveDeliveriesStore } from "@/stores/active-deliveries-store";
+import type { Delivery } from "@/services/mock/active-deliveries.service";
+import { useMemo } from "react";
 
-export function DeliveryList() {
-  const [regionFilter, setRegionFilter] = useState("all");
-  const [driverFilter, setDriverFilter] = useState("all");
-  const [fuelTypeFilter, setFuelTypeFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState("all");
+interface DeliveryListProps {
+  deliveries: Delivery[];
+  availableDrivers: string[];
+}
 
-  const filteredDeliveries = deliveries.filter((delivery) => {
-    if (regionFilter !== "all" && delivery.region !== regionFilter)
-      return false;
-    if (driverFilter !== "all" && delivery.driver.name !== driverFilter)
-      return false;
-    if (fuelTypeFilter !== "all" && delivery.fuelType !== fuelTypeFilter)
-      return false;
-    return true;
-  });
+export function DeliveryList({
+  deliveries,
+  availableDrivers,
+}: DeliveryListProps) {
+  const {
+    regionFilter,
+    driverFilter,
+    fuelTypeFilter,
+    dateFilter,
+    setRegionFilter,
+    setDriverFilter,
+    setFuelTypeFilter,
+    setDateFilter,
+  } = useActiveDeliveriesStore();
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader>
+    <Card className="flex flex-col h-full">
+      <CardHeader className="flex-shrink-0">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             Active Deliveries
-            <Badge variant="secondary">{filteredDeliveries.length}</Badge>
+            <Badge variant="secondary">{deliveries.length}</Badge>
           </CardTitle>
         </div>
 
@@ -67,7 +69,11 @@ export function DeliveryList() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Drivers</SelectItem>
-              <SelectItem value="Dianne Russell">Dianne Russell</SelectItem>
+              {availableDrivers.map((driver) => (
+                <SelectItem key={driver} value={driver}>
+                  {driver}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -95,8 +101,8 @@ export function DeliveryList() {
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 space-y-4">
-        {filteredDeliveries.map((delivery) => (
+      <CardContent className="flex-1 overflow-y-auto max-h-[1000px] space-y-4 pr-2">
+        {deliveries.map((delivery) => (
           <Card key={delivery.id} className="overflow-hidden">
             <CardContent className="p-4">
               {/* Header */}

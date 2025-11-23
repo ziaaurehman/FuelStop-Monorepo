@@ -8,17 +8,11 @@ import {
   ChartConfig,
   ChartContainer,
   Button,
-  colors
+  colors,
 } from "@repo/components";
 import { Cell, Label, Pie, PieChart } from "recharts";
 import { useState } from "react";
-
-const chartData = [
-  { name: "Petroleum Haulers", value: 32, fill: colors.primary },
-  { name: "Retail Fleets", value: 30, fill: colors.primaryLight },
-  { name: "Municipal", value: 20, fill: colors.secondary },
-  { name: "Construction", value: 18, fill: colors.secondaryLight },
-];
+import type { FleetComparisonData } from "@/services/mock/fuel-usage.service";
 
 const chartConfig = {
   value: {
@@ -42,7 +36,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function FleetComparisonChart() {
+interface FleetComparisonChartProps {
+  data: FleetComparisonData[];
+}
+
+export function FleetComparisonChart({
+  data,
+}: FleetComparisonChartProps) {
   const [activeTab, setActiveTab] = useState<"fleet" | "operation">("fleet");
 
   return (
@@ -75,14 +75,14 @@ export function FleetComparisonChart() {
         >
           <PieChart>
             <Pie
-              data={chartData}
+              data={data}
               dataKey="value"
               nameKey="name"
               innerRadius={60}
               outerRadius={100}
               strokeWidth={0}
             >
-              {chartData.map((entry, index) => (
+              {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
               <Label
@@ -100,7 +100,7 @@ export function FleetComparisonChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {chartData.reduce((a, b) => a + b.value, 0)}%
+                          {data.reduce((a, b) => a + b.value, 0)}%
                         </tspan>
                         <tspan
                           x={viewBox.cx}
@@ -120,7 +120,7 @@ export function FleetComparisonChart() {
 
         {/* Legend */}
         <div className="grid grid-cols-2 gap-3 mt-4">
-          {chartData.map((item, index) => (
+          {data.map((item, index) => (
             <div key={index} className="flex items-center gap-2">
               <div
                 className="h-3 w-3 rounded-sm"

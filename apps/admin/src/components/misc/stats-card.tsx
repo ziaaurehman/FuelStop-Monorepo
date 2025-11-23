@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Card,
   CardContent,
@@ -8,6 +6,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  Skeleton,
 } from "@repo/components";
 import { Info, ArrowUp, ArrowDown } from "lucide-react";
 
@@ -22,11 +21,7 @@ export type StatItem = {
   tooltip?: string;
 };
 
-interface StatsCardProps {
-  stat: StatItem;
-}
-
-export function StatsCard({ stat }: StatsCardProps) {
+export function StatsCard({ stat }: { stat: StatItem }) {
   const Icon = stat.icon;
   const variant = stat.badge?.variant;
 
@@ -85,9 +80,7 @@ export function StatsCard({ stat }: StatsCardProps) {
           </p>
 
           <div className="flex items-baseline gap-2 sm:gap-3">
-            <p className="text-2xl font-semibold text-nowrap">
-              {stat.value}
-            </p>
+            <p className="text-2xl font-semibold text-nowrap">{stat.value}</p>
             {renderBadgeContent()}
           </div>
 
@@ -107,6 +100,39 @@ export function StatsCard({ stat }: StatsCardProps) {
               </Tooltip>
             </TooltipProvider>
           )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * StatsCardSkeleton Component
+ *
+ * Skeleton loader for StatsCard that matches the exact structure
+ * of the actual StatsCard component for a seamless loading experience.
+ */
+export function StatsCardSkeleton() {
+  return (
+    <Card className="w-full h-full overflow-hidden">
+      <CardContent className="p-4 sm:p-6">
+        {/* Header Icon Skeleton */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="p-2 rounded-lg bg-muted flex-shrink-0">
+            <Skeleton className="h-5 w-5" />
+          </div>
+        </div>
+
+        {/* Content Skeleton */}
+        <div className="space-y-2">
+          {/* Label Skeleton */}
+          <Skeleton className="h-4 w-24" />
+
+          {/* Value and Badge Skeleton */}
+          <div className="flex items-baseline gap-2 sm:gap-3">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-6 w-16" />
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -5,6 +5,7 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
+  PaginationState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -45,17 +46,74 @@ export function DataTable<TData extends Record<string, unknown>>({
   emptyMessage = "No results found.",
   expandableContent,
   mobileColumns = ["id", "status"], // Default columns to show in mobile collapsed view
+  initialColumnFilters,
+  onSearchChange,
+  onExport,
+  initialPagination,
+  onPaginationChange,
 }: DataTableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    initialColumnFilters ?? []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: initialPagination?.pageIndex ?? 0,
+    pageSize: initialPagination?.pageSize ?? pageSize,
+  });
   const [expandedRows, setExpandedRows] = React.useState<Set<string>>(
     new Set()
   );
+
+  // Sync initial column filters when they change externally (for URL-initiated changes)
+  const prevInitialFiltersRef = React.useRef(initialColumnFilters);
+  React.useEffect(() => {
+    if (initialColumnFilters && searchKey) {
+      const newFilter = initialColumnFilters.find((f) => f.id === searchKey);
+      const newValue = (newFilter?.value as string) ?? "";
+      const prevFilter = prevInitialFiltersRef.current?.find(
+        (f) => f.id === searchKey
+      );
+      const prevValue = (prevFilter?.value as string) ?? "";
+
+      // Only update if the value actually changed from previous initial filters
+      if (newValue !== prevValue) {
+        setColumnFilters((prev) => {
+          const filtered = prev.filter((f) => f.id !== searchKey);
+          if (newValue) {
+            return [...filtered, { id: searchKey, value: newValue }];
+          }
+          return filtered;
+        });
+      }
+      prevInitialFiltersRef.current = initialColumnFilters;
+    }
+  }, [initialColumnFilters, searchKey]);
+
+  // Sync pagination changes to callback
+  const handlePaginationChange = React.useCallback(
+    (updater: PaginationState | ((old: PaginationState) => PaginationState)) => {
+      setPagination((old) => {
+        const newPagination =
+          typeof updater === "function" ? updater(old) : updater;
+        onPaginationChange?.(newPagination);
+        return newPagination;
+      });
+    },
+    [onPaginationChange]
+  );
+
+  // Sync initial pagination when it changes externally
+  React.useEffect(() => {
+    if (initialPagination) {
+      setPagination((prev) => ({
+        pageIndex: initialPagination.pageIndex ?? prev.pageIndex,
+        pageSize: initialPagination.pageSize ?? prev.pageSize,
+      }));
+    }
+  }, [initialPagination]);
 
   const table = useReactTable({
     data,
@@ -65,12 +123,14 @@ export function DataTable<TData extends Record<string, unknown>>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: handlePaginationChange,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -79,8 +139,10 @@ export function DataTable<TData extends Record<string, unknown>>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     initialState: {
       pagination: {
-        pageSize,
+        pageIndex: initialPagination?.pageIndex ?? 0,
+        pageSize: initialPagination?.pageSize ?? pageSize,
       },
+      columnFilters: initialColumnFilters ?? [],
     },
   });
 
@@ -104,6 +166,8 @@ export function DataTable<TData extends Record<string, unknown>>({
           searchKey={searchKey}
           searchPlaceholder={searchPlaceholder}
           showExport={showExport}
+          onSearchChange={onSearchChange}
+          onExport={onExport}
         />
       )}
 

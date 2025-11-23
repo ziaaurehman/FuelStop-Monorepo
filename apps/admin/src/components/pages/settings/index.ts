@@ -1,6 +1,14 @@
-export * from './settings-sidebar'
-export * from './mobile-nav'
-export * from './setting-item'
-export * from './role-selector'
-export * from './photo-upload'
-export * from './notification-section'
+export * from "./settings-sidebar";
+export * from "./mobile-nav";
+export * from "./setting-item";
+export * from "./role-selector";
+export * from "./photo-upload";
+export * from "./notification-section";
+export { default as GeneralSettings } from "./general/page";
+export { default as AdminRoleSettings } from "./admin-role/page";
+export { default as ApiKeySettings } from "./api-key/page";
+export { default as FuelPriceSettings } from "./fuel-price/page";
+export { default as IntegrationSettings } from "./integrations/page";
+export { default as LocalizationSettings } from "./localization/page";
+export { default as NotificationSettings } from "./notifications/page";
+export { default as SecuritySettings } from "./security/page";

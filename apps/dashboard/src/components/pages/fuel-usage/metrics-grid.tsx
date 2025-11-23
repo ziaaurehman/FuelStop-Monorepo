@@ -9,6 +9,7 @@ import {
   Card,
   CardContent,
 } from "@repo/components";
+import type { MetricsData } from "@/services/mock/fuel-usage.service";
 
 interface MetricCardProps {
   title: string;
@@ -48,35 +49,34 @@ function MetricCard({ title, value, subtitle, tooltip }: MetricCardProps) {
 }
 
 interface MetricsGridProps {
-  timeRange: "3" | "6" | "12";
+  metrics: MetricsData;
 }
 
-export function MetricsGrid({}: MetricsGridProps) {
-  // You can adjust these values based on timeRange
-  const metrics = [
+export function MetricsGrid({ metrics }: MetricsGridProps) {
+  const metricItems = [
     {
       title: "Average gal per fill up",
-      value: "486 gal",
+      value: metrics.averageGallonsPerFill,
     },
     {
       title: "Annual Fuel Consumption",
-      value: "1200k gal",
+      value: metrics.annualFuelConsumption,
     },
     {
       title: "Fuel time Savings Annually",
-      value: "2k hrs",
+      value: metrics.fuelTimeSavingsAnnually,
       subtitle: "Based on 30 minutes per refueling trip",
       tooltip: "Based on 30 minutes per refueling trip",
     },
     {
       title: "Labour Savings Annually",
-      value: "$77k",
+      value: metrics.labourSavingsAnnually,
       subtitle: "At $32/hour including wages and benefits",
       tooltip: "At $32/hour including wages and benefits",
     },
     {
       title: "Avg Annual Savings per vehicle",
-      value: "$14,893",
+      value: metrics.avgAnnualSavingsPerVehicle,
       subtitle:
         "Includes labour savings+18% fuel cost savings at 3.5$/gallon diesel",
       tooltip:
@@ -86,7 +86,7 @@ export function MetricsGrid({}: MetricsGridProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5 grid-cols-1">
-      {metrics.map((metric, index) => (
+      {metricItems.map((metric, index) => (
         <MetricCard key={index} {...metric} />
       ))}
     </div>

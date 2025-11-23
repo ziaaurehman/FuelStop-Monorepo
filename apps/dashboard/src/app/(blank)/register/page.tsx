@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import Logo from "@/components/misc/logo";
+import Logo from "@repo/components/shared/logo";
+
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);

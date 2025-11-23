@@ -8,36 +8,13 @@ import {
   CardTitle,
 } from "@repo/components";
 import { Info } from "lucide-react";
+import type { PredictiveInsight } from "@/services/mock/active-deliveries.service";
 
-const insights = [
-  {
-    message: "Your construction fleet will require refueling in 2.4 days.",
-    action: "Schedule Now",
-    actionLink: "#",
-  },
-  {
-    message: "3 trucks exceeded ideal idle thresholds this week.",
-    action: "View Details",
-    actionLink: "#",
-  },
-  {
-    message: "Reordering now saves ~12 refueling hours this week.",
-    action: "Optimize Schedule",
-    actionLink: "#",
-  },
-  {
-    message: "Your construction fleet will require refueling in 2.4 days.",
-    action: "View Route",
-    actionLink: "#",
-  },
-  {
-    message: "Your construction fleet will require refueling in 2.4 days.",
-    action: "View Route",
-    actionLink: "#",
-  },
-];
+interface PredictiveInsightsProps {
+  insights: PredictiveInsight[];
+}
 
-export function PredictiveInsights() {
+export function PredictiveInsights({ insights }: PredictiveInsightsProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader>

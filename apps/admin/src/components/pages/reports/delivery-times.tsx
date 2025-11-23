@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
@@ -41,14 +42,19 @@ interface DeliveryTimesProps {
 }
 
 export function DeliveryTimes({ timeRange }: DeliveryTimesProps) {
-  // Filter data based on timeRange
-  const filteredData = chartData.slice(-parseInt(timeRange));
+  // Memoize filtered data to prevent unnecessary recalculations
+  const filteredData = useMemo(
+    () => chartData.slice(-parseInt(timeRange)),
+    [timeRange]
+  );
 
-  // Calculate total for the last month
-  const lastMonth = filteredData[filteredData.length - 1];
-  const totalCost = lastMonth
-    ? lastMonth.evening + lastMonth.morning + lastMonth.night
-    : 0;
+  // Memoize total cost calculation
+  const totalCost = useMemo(() => {
+    const lastMonth = filteredData[filteredData.length - 1];
+    return lastMonth
+      ? lastMonth.evening + lastMonth.morning + lastMonth.night
+      : 0;
+  }, [filteredData]);
 
   return (
     <Card className="flex flex-col">

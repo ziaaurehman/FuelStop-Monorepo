@@ -4,7 +4,7 @@ import { Button, Input, Label, Checkbox } from "@repo/components";
 import { Mail, Lock, Eye, EyeOff, UserRound } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import Logo from "@/components/misc/logo";
+import Logo from "@repo/components/shared/logo";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);

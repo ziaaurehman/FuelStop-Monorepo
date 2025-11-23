@@ -1,125 +1,72 @@
 "use client";
 
-import { useState } from "react";
-import { ColumnDef } from "@tanstack/react-table";
-import { Download } from "lucide-react";
+import { useMemo, useCallback } from "react";
+import { DataTable } from "@repo/components";
+import { Payment } from "@/data";
+import { usePayments } from "@/hooks/queries/use-payments";
+import { useBillingStore } from "@/stores/billing-store";
+import { usePaymentColumns } from "./use-payment-columns";
+import { PaymentsTableSkeleton } from "./payments-table-skeleton";
 
-import {
-  Badge,
-  Checkbox,
-  DataTable,
-  formatDate,
-  TableColumnHeader,
-
-} from "@repo/components";
-import { getPaymentStatusColor, Payment, payments } from "@/data";
-
+/**
+ * Payments table component with filtering, search, and pagination.
+ */
 export function Payments() {
-  const [loading] = useState(false);
+  // Use selective subscriptions to prevent unnecessary re-renders
+  const paymentStatusFilter = useBillingStore(
+    (state) => state.paymentStatusFilter
+  );
+  const paymentSearchQuery = useBillingStore(
+    (state) => state.paymentSearchQuery
+  );
+  const paymentPage = useBillingStore((state) => state.paymentPage);
+  const paymentPageSize = useBillingStore((state) => state.paymentPageSize);
+  const setPaymentSearchQuery = useBillingStore(
+    (state) => state.setPaymentSearchQuery
+  );
+  const setPaymentPagination = useBillingStore(
+    (state) => state.setPaymentPagination
+  );
 
-  // Columns definition
-  const columns: ColumnDef<Payment>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="translate-y-[2px]"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-          onClick={(e) => e.stopPropagation()}
-          className="translate-y-[2px]"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "id",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Payment ID" />
-      ),
-      cell: ({ row }) => (
-        <div className="font-medium">{row.getValue("id")}</div>
-      ),
-    },
-    {
-      accessorKey: "invoiceId",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Invoice" />
-      ),
-      cell: ({ row }) => <div>{row.getValue("invoiceId")}</div>,
-    },
-    {
-      accessorKey: "client",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Client" />
-      ),
-      cell: ({ row }) => <div>{row.getValue("client")}</div>,
-    },
-    {
-      accessorKey: "amount",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Amount" />
-      ),
-      cell: ({ row }) => {
-        const amount = row.getValue("amount") as number;
-        return <div className="font-medium">${amount.toFixed(2)}</div>;
-      },
-    },
-    {
-      accessorKey: "method",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Method" />
-      ),
-      cell: ({ row }) => <div>{row.getValue("method")}</div>,
-    },
-    {
-      accessorKey: "dueDate",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Due Date" />
-      ),
-      cell: ({ row }) => <div>{formatDate(row.getValue("dueDate"))}</div>,
-    },
-    {
-      accessorKey: "status",
-      header: ({ column }) => (
-        <TableColumnHeader column={column} title="Status" />
-      ),
-      cell: ({ row }) => {
-        const status = row.getValue("status") as string;
-        return (
-          <Badge variant="outline" className={getPaymentStatusColor(status)}>
-            <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-current" />
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </Badge>
-        );
-      },
-    },
-    {
-      id: "actions",
-      header: () => <div className="text-center">Actions</div>,
-      cell: () => (
-        <div className="flex items-center justify-center">
-          <Download className="h-4 w-4 text-muted-foreground" />
-        </div>
-      ),
-    },
-  ];
+  const { columns } = usePaymentColumns();
 
-  const handleRowClick = (payment: Payment) => {
+  // Memoize filters to prevent unnecessary query refetches
+  const filters = useMemo(
+    () => ({
+      status: paymentStatusFilter,
+      search: paymentSearchQuery,
+      page: paymentPage,
+      limit: paymentPageSize,
+    }),
+    [paymentStatusFilter, paymentSearchQuery, paymentPage, paymentPageSize]
+  );
+
+  const { data, isLoading, isError } = usePayments(filters);
+
+  const payments = useMemo(() => data?.payments ?? [], [data?.payments]);
+
+  const handleRowClick = useCallback((payment: Payment) => {
     console.log("Row clicked:", payment);
-  };
+  }, []);
+
+  const handlePaginationChange = useCallback(
+    (pagination: { pageIndex: number; pageSize: number }) => {
+      setPaymentPagination(pagination.pageIndex + 1, pagination.pageSize);
+    },
+    [setPaymentPagination]
+  );
+
+  if (isLoading) {
+    return <PaymentsTableSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-4 text-center text-destructive">
+        Failed to load payments. Please try again.
+      </div>
+    );
+  }
 
   return (
     <div className="mt-4">
@@ -131,9 +78,13 @@ export function Payments() {
         showSearch
         showExport
         showPagination
-        pageSize={10}
+        initialPagination={{
+          pageIndex: paymentPage - 1,
+          pageSize: paymentPageSize,
+        }}
+        onPaginationChange={handlePaginationChange}
+        onSearchChange={setPaymentSearchQuery}
         onRowClick={handleRowClick}
-        loading={loading}
         emptyMessage="No payments found."
       />
     </div>

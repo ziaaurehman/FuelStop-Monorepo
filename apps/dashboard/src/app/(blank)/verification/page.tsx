@@ -3,7 +3,7 @@
 import { Button } from "@repo/components";
 import { MailCheck } from "lucide-react";
 import Link from "next/link";
-import Logo from "@/components/misc/logo";
+import Logo from "@repo/components/shared/logo";
 import { InputOTP, InputOTPSlot } from "@repo/components";
 
 const VerificationPage = () => {

@@ -3,7 +3,7 @@
 import { Button, Input, Label } from "@repo/components";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
-import Logo from "@/components/misc/logo";
+import Logo from "@repo/components/shared/logo";
 
 const ResetPage = () => {
   return (

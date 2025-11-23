@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -20,62 +19,11 @@ import { getStatusColor } from "@/lib";
 import { Order } from "@/data";
 import Link from "next/link";
 
-// Dummy active deliveries data
-const activeDeliveries: Order[] = [
-  {
-    id: "#ORD-98745",
-    client: "Metro Gas Station",
-    address: "123 Main St, Downtown",
-    gallons: 500,
-    status: "in transit",
-    driver: { name: "Dianne Russell", avatar: "" },
-    date: "2024-10-28T10:30:00",
-    priority: "high",
-  },
-  {
-    id: "#ORD-98746",
-    client: "City Fuel Hub",
-    address: "456 Oak Ave, Uptown",
-    gallons: 400,
-    status: "delivered",
-    driver: { name: "Savannah Nguyen", avatar: "" },
-    date: "2024-10-28T09:15:00",
-    priority: "medium",
-  },
-  {
-    id: "#ORD-98747",
-    client: "Express Gas",
-    address: "789 Pine Rd, Suburbs",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Jacob Jones", avatar: "" },
-    date: "2024-10-28T08:45:00",
-    priority: "low",
-  },
-  {
-    id: "#ORD-98748",
-    client: "Quick Stop Fuel",
-    address: "321 Maple Dr, Downtown",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Albert Flores", avatar: "" },
-    date: "2024-10-28T11:20:00",
-    priority: "medium",
-  },
-  {
-    id: "#ORD-98749",
-    client: "Highway Gas",
-    address: "654 Elm St, Highway Exit",
-    gallons: 500,
-    status: "delivered",
-    driver: { name: "Esther Howard", avatar: "" },
-    date: "2024-10-28T07:30:00",
-    priority: "high",
-  },
-];
+interface ActiveDeliveriesTableProps {
+  orders: Order[];
+}
 
-export function ActiveDeliveriesTable() {
-  const [loading] = useState(false);
+export function ActiveDeliveriesTable({ orders }: ActiveDeliveriesTableProps) {
 
   // Define columns for the compact view
   const columns: ColumnDef<Order>[] = [
@@ -174,11 +122,11 @@ export function ActiveDeliveriesTable() {
       <CardContent className="flex-1 pb-0">
         <DataTable
           columns={columns}
-          data={activeDeliveries}
+          data={orders}
           showSearch={false}
           showExport={false}
           showPagination={false}
-          loading={loading}
+          loading={false}
           emptyMessage="No active deliveries."
         />
       </CardContent>

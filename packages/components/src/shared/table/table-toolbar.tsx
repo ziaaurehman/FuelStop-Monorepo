@@ -10,7 +10,8 @@ interface DataTableToolbarProps<TData extends Record<string, unknown>> {
   searchKey?: string;
   searchPlaceholder?: string;
   showExport?: boolean;
-  onExport?: () => void;
+  onExport?: (table: Table<TData>) => void;
+  onSearchChange?: (value: string) => void;
 }
 
 export function TableToolbar<TData extends Record<string, unknown>>({
@@ -19,12 +20,13 @@ export function TableToolbar<TData extends Record<string, unknown>>({
   searchPlaceholder = "Search...",
   showExport = true,
   onExport,
+  onSearchChange,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   const handleExport = () => {
     if (onExport) {
-      onExport();
+      onExport(table);
     } else {
       const data = table.getFilteredRowModel().rows.map((row) => row.original);
       exportToCSV(data, "table-export.csv");
@@ -40,9 +42,11 @@ export function TableToolbar<TData extends Record<string, unknown>>({
             value={
               (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
             }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            onChange={(event) => {
+              const value = event.target.value;
+              table.getColumn(searchKey)?.setFilterValue(value);
+              onSearchChange?.(value);
+            }}
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}

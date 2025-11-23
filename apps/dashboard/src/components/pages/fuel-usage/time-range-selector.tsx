@@ -2,13 +2,11 @@
 
 import { Button } from "@repo/components";
 import { cn } from "@/lib";
+import { useFuelUsageStore } from "@/stores/fuel-usage-store";
 
-interface TimeRangeSelectorProps {
-  value: "3" | "6" | "12";
-  onChange: (value: "3" | "6" | "12") => void;
-}
+export function TimeRangeSelector() {
+  const { timeRange, setTimeRange } = useFuelUsageStore();
 
-export function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
   const options = [
     { label: "3 Month", value: "3" as const },
     { label: "6 Month", value: "6" as const },
@@ -24,10 +22,10 @@ export function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
           size="sm"
           className={cn(
             "rounded-md px-4",
-            value === option.value &&
+            timeRange === option.value &&
               "bg-background shadow-sm hover:bg-background"
           )}
-          onClick={() => onChange(option.value)}
+          onClick={() => setTimeRange(option.value)}
         >
           {option.label}
         </Button>
